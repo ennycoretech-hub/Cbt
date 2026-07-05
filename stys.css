@@ -1,0 +1,862 @@
+/* ============================================================
+   CBT QUIZ APP — stys.css  v2
+   Z-INDEX LADDER:
+     topbar      → 300
+     sidebar     → 400   (LEFT, slides over content only)
+     sidebar-backdrop → 390
+     calculator  → 500   (fixed, top-right of viewport)
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:        #080b10;
+  --surface:   #0f1520;
+  --surface2:  #162030;
+  --surface3:  #1c2a3f;
+  --border:    #1f2e45;
+  --border2:   #2a3d58;
+  --accent:    #3b82f6;
+  --accent-dim:#1d4ed8;
+  --green:     #22c55e;
+  --amber:     #f59e0b;
+  --danger:    #ef4444;
+  --text:      #e2e8f0;
+  --text2:     #94a3b8;
+  --text3:     #64748b;
+  --radius:    8px;
+  --radius-lg: 14px;
+  --sidebar-w: 272px;
+  --topbar-h:  56px;
+}
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+    }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   MOBILE BLOCK SCREEN
+   ============================================================ */
+.srcs {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: radial-gradient(ellipse at 50% 30%, #0d1a2e 0%, var(--bg) 70%);
+  align-items: center;
+  justify-content: center;
+  padding: 28px 20px;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .srcs { display: flex; }
+  #str, #main, #end { display: none !important; }
+}
+
+/* inner card */
+.hsrcs {
+  width: 100%;
+  max-width: 380px;
+}
+
+.hsrcs .container {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 44px 28px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.special{
+  color:green;
+}
+
+/* pulsing warning icon ring */
+.hsrcs .icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1e3a5f, #0f1f3d);
+  border: 2px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 0 0 8px rgba(59,130,246,0.07);
+}
+
+.hsrcs .head {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+
+.hsrcs .head::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin: 0 auto 14px;
+}
+
+.hsrcs .p {
+  color: var(--text2);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.hsrcs .p:last-child { margin-bottom: 0; }
+
+/* ============================================================
+   START SCREEN
+   ============================================================ */
+#str {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  background: radial-gradient(ellipse at 50% 20%, #0d1a2e 0%, var(--bg) 65%);
+}
+
+#str > div {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  padding: 48px 40px 40px;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Branding header inside start card */
+#str > div::before {
+  content: 'CBT EXAMINATION';
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+#str > div::after {
+  content:'';
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.n {
+  display: block;
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+#str input[type="text"] {
+  display: block;
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 0.95rem;
+  padding: 11px 14px;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  margin-bottom: 20px;
+}
+
+#str input[type="text"]:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+}
+
+#str input[type="text"]::placeholder { color: var(--text3); }
+
+#star {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 13px;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.1s;
+}
+
+#star:hover  { background: #2563eb; }
+#star:active { transform: scale(0.985); }
+
+/* ============================================================
+   MAIN WRAPPER
+   ============================================================ */
+#main {
+  display: none;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+/* ============================================================
+   TOP BAR
+   z-index 300 — above content, below sidebar (400) & calc (500)
+   ============================================================ */
+.forbtn {
+  position: sticky;
+  top: 0;
+  z-index: 300;
+  height: var(--topbar-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: rgba(15, 21, 32, 0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+}
+
+/* candidate name — left side */
+.forbtn > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.forbtn > div:first-child::before {
+  content: '👤';
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+#un {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+/* right controls */
+.ct {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* timer */
+.ct p {
+  font-family: 'Courier New', monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  background: rgba(34,197,94,0.08);
+  border: 1px solid rgba(34,197,94,0.2);
+  border-radius: 6px;
+  padding: 4px 12px;
+}
+
+/* calculator toggle button in topbar */
+#cv {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  border-radius: var(--radius);
+  padding: 6px 14px;
+  font-size: 0.83rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+#cv:hover { background: var(--surface3); color: var(--text); }
+
+/* ============================================================
+   CONTENT ROW (sidebar + question)
+   ============================================================ */
+.qmain {
+  display: flex;
+ 
+  flex: 1;
+  position: relative;
+  min-height: 0;
+}
+
+/* ============================================================
+   QUESTION PANEL  (centre)
+   ============================================================ */
+.hmain {
+  flex: 1;
+  padding: 32px 40px 48px;
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
+  min-width: 0;
+  
+}
+
+/* ── question meta row ────────────────────────────────────── */
+.q-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.ti,.im {
+ width:100%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ margin-bottom: 10px;
+}
+
+/* Question number badge */
+#ti {
+ 
+ width:fit-content;
+  height: fit-content;
+  padding:10px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  border-radius:10%;
+  
+  text-transform: uppercase;
+}
+
+/* Q number label alongside badge */
+#ti::before { content: 'Q'; }
+
+/* Question image */
+#im {
+  display: none;
+  max-width: 100%;
+  max-height: 280px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border2);
+  margin-bottom: 20px;
+  object-fit: contain;
+  background: var(--surface2);
+}
+
+/* Question text */
+#header {
+  font-size: clamp(1rem, 1.6vw, 1.18rem);
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 26px;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+/* ── Options ──────────────────────────────────────────────── */
+/* .p is also used for paragraph in mobile screen — scoped via parent */
+.hmain .p {
+  display: grid;
+  grid-template-columns: 1fr ;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.opts {
+  position: relative;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  border-radius: var(--radius);
+  padding: 14px 16px 14px 44px;
+  font-size: 0.93rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  min-height: 52px;
+  line-height: 1.45;
+}
+
+/* lettered label A B C D */
+.opts:nth-child(1)::before { content: 'A'; }
+.opts:nth-child(2)::before { content: 'B'; }
+.opts:nth-child(3)::before { content: 'C'; }
+.opts:nth-child(4)::before { content: 'D'; }
+
+.opts::before {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text2);
+  line-height: 22px;
+  text-align: center;
+}
+
+.opts:hover {
+  border-color: var(--accent);
+  background: rgba(59,130,246,0.06);
+}
+
+/* selected (JS sets background:blue) */
+.opts[style*="background: blue"],
+.opts[style*="background:blue"] {
+  background: rgba(59,130,246,0.14) !important;
+  border-color: var(--accent) !important;
+  color: var(--text) !important;
+}
+
+.opts[style*="background: blue"]::before,
+.opts[style*="background:blue"]::before {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #fff !important;
+}
+
+/* ── nav button row ───────────────────────────────────────── */
+.btnstack {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding-top: 4px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+
+.btnstack button {
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border2);
+  padding: 9px 22px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  background: var(--surface2);
+  color: var(--text2);
+}
+.btnstack button:hover { background: var(--surface3); color: var(--text); }
+
+#nx {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: var(--accent) !important;
+}
+#nx:hover { background: #2563eb !important; }
+
+#prev { order: -1; }
+
+#obtn {
+  background: var(--surface2);
+  color: var(--text2);
+}
+
+#sumb {
+  background: var(--green) !important;
+  color: #071610 !important;
+  border-color: var(--green) !important;
+  font-weight: 700;
+  margin-left: auto;
+}
+#sumb:hover { opacity: 0.88; }
+
+/* ============================================================
+   CALCULATOR
+   Fixed top-right corner of viewport, clear of content
+   z-index 500 — above everything including sidebar
+   ============================================================ */
+.calc {
+  display: none;
+  position: fixed;
+  top: calc(var(--topbar-h) + 12px);
+  right: 20px;
+  z-index: 500;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  width: 234px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(59,130,246,0.08);
+}
+
+.calc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.calc-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+
+.calc-close {
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+  line-height: 1.6;
+}
+.calc-close:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+#dis {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--green);
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 8px 12px;
+  text-align: right;
+  margin-bottom: 10px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+#dis:focus { border-color: var(--accent); }
+
+.calcs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+
+.calcs button {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 8px 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.calcs button:hover  { background: var(--surface3); }
+.calcs button:active { opacity: 0.75; }
+
+/* operator buttons (green) */
+.calcs button[style*="background: green"],
+.calcs button[style*="background:green"] {
+  background: rgba(34,197,94,0.12) !important;
+  color: var(--green) !important;
+  border-color: rgba(34,197,94,0.25) !important;
+}
+.calcs button[style*="background: green"]:hover,
+.calcs button[style*="background:green"]:hover {
+  background: rgba(34,197,94,0.22) !important;
+}
+
+/* function buttons (blue) */
+.calcs button[style*="background: blue"],
+.calcs button[style*="background:blue"],
+.calcs button[style*="background-color: blue"] {
+  background: rgba(59,130,246,0.12) !important;
+  color: var(--accent) !important;
+  border-color: rgba(59,130,246,0.25) !important;
+}
+.calcs button[style*="background: blue"]:hover,
+.calcs button[style*="background:blue"]:hover,
+.calcs button[style*="background-color: blue"]:hover {
+  background: rgba(59,130,246,0.22) !important;
+}
+
+/* ============================================================
+   SIDEBAR BACKDROP (mobile / small viewport)
+   z-index 390 — just behind sidebar (400)
+   ============================================================ */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 390;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(2px);
+}
+.sidebar-backdrop.visible { display: block; }
+
+/* ============================================================
+   SIDEBAR — LEFT side
+   z-index 400 — above topbar (300), below calculator (500)
+   Does NOT overlap the candidate name: topbar is z:300, sidebar is z:400
+   but sidebar starts BELOW topbar (top: var(--topbar-h))
+   ============================================================ */
+.sub {
+  display: none;
+  position: fixed;
+  top: var(--topbar-h);          /* starts below topbar → name never hidden */
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-w);
+  z-index: 400;
+  background: var(--surface);
+  border-right: 1px solid var(--border2);
+  overflow-y: auto;
+  box-shadow: 4px 0 28px rgba(0,0,0,0.4);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.sidebar-numbers {
+  padding: 16px 12px 48px;
+}
+
+/* close button — top-right of sidebar */
+#cbtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-left: auto;
+  margin-bottom: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+#cbtn:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+/* subject section labels */
+.qr > p {
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 16px 0 8px;
+  padding: 0 0 5px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* empty spacer <p></p> tags — collapse them */
+.qr > p:empty { margin: 0; border: none; padding: 0; }
+
+/* subject heading by id */
+#su2, #su3, #su4 {
+  color: var(--amber) !important;
+}
+
+/* question number grid buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  border-radius: 5px;
+  width: 32px;
+  height: 32px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 2px;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.btn:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* answered (blue set by JS) */
+.btn[style*="background: blue"],
+.btn[style*="background:blue"] {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: var(--accent) !important;
+}
+
+/* unanswered (white set by JS) */
+.btn[style*="background: white"],
+.btn[style*="background:white"] {
+  background: var(--surface2) !important;
+  color: var(--text3) !important;
+  border-color: var(--border) !important;
+}
+
+/* ============================================================
+   END / RESULT SCREEN
+   ============================================================ */
+#end {
+  display: none;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  background: radial-gradient(ellipse at 50% 20%, #0d1a2e 0%, var(--bg) 65%);
+}
+
+.hend {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 460px;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* heading block */
+.hend h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+
+.hend h2::before {
+  content: 'RESULT SUBMISSION';
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.hend h2::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+  margin-top: 18px;
+  margin-bottom: 22px;
+}
+
+/* form labels */
+.hend label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.73rem;
+  font-weight: 700;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  margin-bottom: 14px;
+}
+
+.hend input[type="text"] {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 0.93rem;
+  font-weight: 500;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  width: 100%;
+  margin-top: 2px;
+  letter-spacing: normal;
+}
+.hend input[type="text"]:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.14);
+}
+.hend input[type="text"]::placeholder { color: var(--text3); }
+
+#pos {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  background: var(--green);
+  color: #071610;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 13px;
+  cursor: pointer;
+  transition: opacity 0.18s, transform 0.1s;
+}
+#pos:hover  { opacity: 0.88; }
+#pos:active { transform: scale(0.985); }
+
+/* ============================================================
+   SCROLLBAR — thin, dark
+   ============================================================ */
+::-webkit-scrollbar        { width: 5px; height: 5px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--border2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }

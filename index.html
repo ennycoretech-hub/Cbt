@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select JAMB Combo - Standard</title>
+<style>
+  body { font-family: system-ui; background:#f4f7fb; margin:0; padding:20px; }
+  header { text-align:center; margin-bottom:20px; }
+  header h1 { color:#0d47a1; margin:0; }
+  header p { color:#666; font-size:14px; margin:5px 0 0; }
+
+  /* CATEGORY TABS */
+  .tabs { display:flex; justify-content:center; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
+  .tab { padding:8px 16px; border:2px solid #0d47a1; background:#fff; color:#0d47a1; border-radius:20px; cursor:pointer; font-weight:600; }
+  .tab.active { background:#0d47a1; color:#fff; }
+
+  /* SEARCH */
+  .search-wrap { max-width:600px; margin:0 auto 25px; }
+  .search-wrap input { width:100%; padding:12px 16px; border:2px solid #ddd; border-radius:10px; font-size:15px; outline:none; }
+  .search-wrap input:focus { border-color:#0d47a1; }
+
+  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:20px; max-width:1200px; margin:0 auto; }
+  .card { background:#fff; border-radius:12px; padding:18px; box-shadow:0 4px 12px rgba(0,0,0,0.08); border:2px solid transparent; transition:0.2s; }
+  .card:hover { transform:translateY(-4px); }
+  .card.active { border-color:#0d47a1; background:#e3f2fd; }
+  .category-badge { display:inline-block; background:#ffecb3; color:#8d6e00; padding:3px 8px; border-radius:6px; font-size:10px; font-weight:bold; margin-bottom:8px; }
+  .card h2 { margin:0 0 8px; color:#0d47a1; font-size:18px; }
+  .subjects { font-size:13px; color:#444; margin-bottom:10px; }
+  .english { color:#d32f2f; font-weight:bold; }
+  .courses { font-size:12px; color:#666; }
+  .courses b { display:block; margin-bottom:6px; color:#222; }
+  .tag { display:inline-block; background:#e3f2fd; color:#0d47a1; padding:3px 8px; border-radius:6px; margin:3px 4px 0 0; font-size:11px; cursor:pointer; }
+  .btn { margin-top:12px; background:#0d47a1; color:#fff; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; width:100%; font-weight:600; }
+  .btn:disabled { background:#90caf9; cursor:not-allowed; }
+  .note { text-align:center; font-size:12px; color:#888; margin-top:20px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Select Your JAMB Subject Combination</h1>
+  <p>Standard JAMB: 4 Subjects. English Language is Compulsory.</p>
+</header>
+
+<!-- CATEGORY FILTER -->
+<div class="tabs">
+  <button class="tab active" onclick="filterByCategory('All', this)">All</button>
+  <button class="tab" onclick="filterByCategory('Science', this)">Science</button>
+  <button class="tab" onclick="filterByCategory('Commercial', this)">Commercial</button>
+  <button class="tab" onclick="filterByCategory('Arts', this)">Arts</button>
+</div>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <input type="text" id="search" placeholder="Search course: Medicine, Law, Engineering...">
+</div>
+
+<div class="grid" id="comboGrid"></div>
+<p class="note">* Your selected combo will be used to get questions from the backend</p>
+
+<script>
+  // STANDARD JAMB COMBOS: name = 4th subject. This is what backend uses
+  const combos = [
+    // SCIENCE
+    { category: "Science", name: "Biology", subjects: ["English Language", "Physics", "Chemistry", "Biology"], courses: ["Medicine", "Pharmacy", "Nursing", "Biochemistry", "Microbiology", "Agriculture", "Zoology"] },
+    { category: "Science", name: "Mathematics", subjects: ["English Language", "Physics", "Chemistry", "Mathematics"], courses: ["Engineering", "Computer Science", "Architecture", "Statistics", "Physics", "Data Science"] },
+    { category: "Science", name: "Agriculture", subjects: ["English Language", "Chemistry", "Biology", "Agricultural Science"], courses: ["Agric Science", "Animal Science", "Crop Science", "Soil Science", "Fisheries"] },
+    
+    // COMMERCIAL
+    { category: "Commercial", name: "Economics", subjects: ["English Language", "Mathematics", "Economics", "Commerce"], courses: ["Accounting", "Banking and Finance", "Business Admin", "Marketing", "Insurance"] },
+    { category: "Commercial", name: "Government", subjects: ["English Language", "Mathematics", "Economics", "Government"], courses: ["Public Administration", "Political Science", "International Relations"] },
+    
+    // ARTS
+    { category: "Arts", name: "Literature", subjects: ["English Language", "Literature in English", "Government", "CRS"], courses: ["Law", "English", "History", "Mass Communication", "Theatre Arts"] },
+    { category: "Arts", name: "Government", subjects: ["English", "Literature in English", "Government", "History"], courses: ["Law", "Political Science", "International Studies", "Philosophy"] },
+    { category: "Arts", name: "CRS", subjects: ["English Language", "Literature in English", "CRS", "Government"], courses: ["Theology", "Philosophy", "Religious Studies", "Education"] }
+  ]
+
+  const grid = document.getElementById('comboGrid')
+  const search = document.getElementById('search')
+  let currentCategory = 'All'
+  const saved = JSON.parse(localStorage.getItem('combo'))
+
+  function render(list) {
+    grid.innerHTML = ''
+    if(list.length === 0){ grid.innerHTML = `<div style="text-align:center; grid-column:1/-1;">No combination found</div>`; return }
+
+    list.forEach(combo => {
+      const isActive = saved && saved.name === combo.name
+      const card = document.createElement('div')
+      card.className = 'card' + (isActive ? ' active' : '')
+      
+      card.innerHTML = `
+        <span class="category-badge">${combo.category}</span>
+        <h2>${combo.name} Combination</h2>
+        <div class="subjects">
+          <b>Subjects:</b> 
+          ${combo.subjects.map(s => s.includes('English') ? `<span class="english">${s}</span>` : s).join(' + ')}
+        </div>
+        <div class="courses">
+          <b>Related Courses:</b>
+          ${combo.courses.map(c => `<span class="tag" onclick="search.value='${c}'; filterAll()">${c}</span>`).join('')}
+        </div>
+        <button class="btn" ${isActive ? 'disabled' : ''} onclick='selectCombo(${JSON.stringify(combo).replace(/'/g, "&apos;")})'>
+          ${isActive ? 'Selected ✓' : `Start ${combo.name} Quiz`}
+        </button>
+      `
+      grid.appendChild(card)
+    })
+  }
+
+  function filterAll() {
+    const term = search.value.toLowerCase()
+    let filtered = combos
+    if(currentCategory !== 'All') filtered = filtered.filter(c => c.category === currentCategory)
+    filtered = filtered.filter(c => 
+      c.name.toLowerCase().includes(term) ||
+      c.subjects.join(' ').toLowerCase().includes(term) ||
+      c.courses.join(' ').toLowerCase().includes(term)
+    )
+    render(filtered)
+  }
+
+  function filterByCategory(cat, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
+    btn.classList.add('active')
+    currentCategory = cat
+    filterAll()
+  }
+
+  function selectCombo(combo) {
+    // STANDARD: Save full combo. Backend only needs combo.name
+    localStorage.setItem('combo', JSON.stringify(combo))
+    alert(`You selected ${combo.name} Combo\nSubjects: ${combo.subjects.join(', ')}`)
+    window.location.href = 'quiz.html'
+  }
+
+  search.addEventListener('input', filterAll)
+  render(combos) // initial load
+</script>
+
+</body>
+</html>
